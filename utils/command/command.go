@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+/*description of parameters */
 type flag struct {
 	name  string
 	value string
