@@ -2,9 +2,9 @@
 package upload
 
 import (
+	"encoding/hex"
 	"fmt"
 	"hash/crc32"
-	"encoding/hex"
 	"io"
 	"log"
 	"net"
@@ -94,13 +94,28 @@ func Upload(file *os.File, debug bool, leaderAddress string) string {
 		}
 
 		hash := crc32.NewIEEE()
-		io.CopyN(dataNode, io.TeeReader(file, hash), size)
+
+		io.CopyN(dataNode, io.TeeReader(file, hash), size)	// TODO socket
+		//io.TeeReader(file, hash)
+
+
+
+
+		//var data []byte
+		//io.CopyN(data, io.TeeReader(file, hash), size)
+
+
+
 
 		log.Println("Uploading block with checksum", hex.EncodeToString(hash.Sum([]byte{})))
 		err = dataNodeClient.Call("Confirm", fmt.Sprint(hash.Sum32()), nil)
 		if err != nil {
 			log.Fatal("Confirm error: ", err)
 		}
+		//err = dataNodeClient.Call("addData", dataNode, nil)
+		//if err != nil {
+		//	log.Fatal("addData error: ", err)
+		//}
 	}
 
 	err = client.Call("Commit", nil, nil)

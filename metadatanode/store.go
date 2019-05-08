@@ -40,20 +40,20 @@ func (self *DB) Append(key, value string) error {
 }
 
 func (self *DB) Get(key string) ([]string, error) {
-	rows, err := self.conn.Query("SELECT block FROM file_blocks WHERE blob=?", key)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	var blocks []string
-	for rows.Next() {
-		var b string
-		err = rows.Scan(&b)
+		rows, err := self.conn.Query("SELECT block FROM file_blocks WHERE blob=?", key)
 		if err != nil {
 			return nil, err
 		}
-		blocks = append(blocks, b)
-	}
+		defer rows.Close()
+		var blocks []string
+		for rows.Next() {
+			var b string
+			err = rows.Scan(&b)
+			if err != nil {
+				return nil, err
+			}
+			blocks = append(blocks, b)
+		}
 
 	return blocks, nil
 }

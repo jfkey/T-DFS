@@ -201,6 +201,7 @@ func (self *MetaDataNodeState) LeastUsedNodes() []NodeID {
 
 	return nodes
 }
+
 func (self *MetaDataNodeState) MostUsedNodes() []NodeID {
 	var nodes []NodeID
 	for nodeID, _ := range self.dataNodes {

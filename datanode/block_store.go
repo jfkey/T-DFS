@@ -2,13 +2,12 @@ package datanode
 
 import (
 	"fmt"
+	"golang-distributed-filesystem/common"
 	"hash/crc32"
 	"io"
 	"io/ioutil"
 	"os"
 	"path"
-
-	. "golang-distributed-filesystem/common"
 )
 
 // Deals with filesystem
@@ -16,7 +15,7 @@ type BlockStore struct {
 	DataDir string
 }
 
-func (self *BlockStore) BlockSize(block BlockID) (int64, error) {
+func (self *BlockStore) BlockSize(block common.BlockID) (int64, error) {
 	fileInfo, err := os.Stat(self.BlockFilename(block))
 	if err != nil {
 		return -1, err
@@ -24,7 +23,7 @@ func (self *BlockStore) BlockSize(block BlockID) (int64, error) {
 	return fileInfo.Size(), nil
 }
 
-func (self *BlockStore) LocalChecksum(block BlockID) (string, error) {
+func (self *BlockStore) LocalChecksum(block common.BlockID) (string, error) {
 	file, err := os.Open(self.BlockFilename(block))
 	if err != nil {
 		return "", err
@@ -38,7 +37,7 @@ func (self *BlockStore) LocalChecksum(block BlockID) (string, error) {
 	return fmt.Sprint(hash.Sum32()), nil
 }
 
-func (self *BlockStore) ReadBlock(block BlockID, w io.Writer) error {
+func (self *BlockStore) ReadBlock(block common.BlockID, w io.Writer) error {
 	file, err := os.Open(self.BlockFilename(block))
 	if err != nil {
 		return err
@@ -51,29 +50,44 @@ func (self *BlockStore) ReadBlock(block BlockID, w io.Writer) error {
 	return nil
 }
 
-func (self *BlockStore) WriteBlock(block BlockID, size int64, r io.Reader) (string, error) {
+func (self *BlockStore) WriteBlock(block common.BlockID, size int64, r io.Reader) (string, error) {
+	//b1 := make([]byte, 5)
+	//n1, err := r.Read(b1)
+	//fmt.Printf("%d bytes: %s\n", n1, string(b1))
+
 	file, err := os.Create(self.BlockFilename(block))
 	if err != nil {
 		return "", err
 	}
 	defer file.Close()
 
+	b := make([]byte, size)
+	_, err = r.Read(b)
+	file.Write(b)
+
+	f2, err := os.Open(file.Name())
 	hash := crc32.NewIEEE()
-	_, err = io.CopyN(file, io.TeeReader(r, hash), size)
+	_, err = io.CopyN(file, io.TeeReader(f2, hash), size)
+
+
+
 	if err != nil {
 		return "", err
 	}
+	// TODO write
+
 	return fmt.Sprint(hash.Sum32()), nil
+
 }
 
-func (self *BlockStore) ReadBlockList() ([]BlockID, error) {
+func (self *BlockStore) ReadBlockList() ([]common.BlockID, error) {
 	files, err := ioutil.ReadDir(self.BlocksDirectory())
 	if err != nil {
 		return nil, err
 	}
-	var names []BlockID
+	var names []common.BlockID
 	for _, f := range files {
-		names = append(names, BlockID(f.Name()))
+		names = append(names, common.BlockID(f.Name()))
 	}
 	return names, nil
 }
@@ -82,14 +96,15 @@ func (self *BlockStore) BlocksDirectory() string {
 	return path.Join(self.DataDir, "blocks")
 }
 
-func (self *BlockStore) ReadChecksum(block BlockID) (string, error) {
+func (self *BlockStore) ReadChecksum(block common.BlockID) (string, error) {
 	b, err := ioutil.ReadFile(self.ChecksumFilename(block))
 	if err != nil {
 		return "", err
 	}
 	return string(b), nil
 }
-func (self *BlockStore) WriteChecksum(block BlockID, s string) error {
+
+func (self *BlockStore) WriteChecksum(block common.BlockID, s string) error {
 	return ioutil.WriteFile(self.ChecksumFilename(block), []byte(s), 0777)
 }
 
@@ -97,15 +112,15 @@ func (self *BlockStore) MetaDirectory() string {
 	return path.Join(self.DataDir, "meta")
 }
 
-func (self *BlockStore) BlockFilename(block BlockID) string {
+func (self *BlockStore) BlockFilename(block common.BlockID) string {
 	return path.Join(self.BlocksDirectory(), string(block))
 }
 
-func (self *BlockStore) ChecksumFilename(block BlockID) string {
+func (self *BlockStore) ChecksumFilename(block common.BlockID) string {
 	return path.Join(self.MetaDirectory(), string(block)+".crc32")
 }
 
-func (self *BlockStore) DeleteBlock(block BlockID) error {
+func (self *BlockStore) DeleteBlock(block common.BlockID) error {
 	err := os.Remove(self.BlockFilename(block))
 	if err != nil {
 		return err

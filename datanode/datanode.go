@@ -1,6 +1,7 @@
 package datanode
 
 import (
+	"io"
 	"log"
 	"net"
 	"net/rpc"
@@ -222,4 +223,9 @@ func tick(dn *DataNodeState) {
 			dn.forwardingBlocks <- fwd
 		}
 	}()
+}
+
+func writeBlock(blobId BlockID, size int64, r io.Reader){
+	var block_stroe BlockStore
+	block_stroe.WriteBlock(blobId, size, r)
 }

@@ -12,7 +12,6 @@ type listenerFlag struct {
 	port int
 }
 
-
 func ListenerFlag(flags Flags, name string, value int, usage string) *listenerFlag {
 	self := &listenerFlag{port: value}
 	flags.Var(self, name, usage)

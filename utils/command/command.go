@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-/*description of parameters */
 type flag struct {
 	name  string
 	value string
@@ -67,11 +66,13 @@ func (self *flagDummy) String(name string, value string, usage string) *string {
 	*self.list = append(*self.list, flag)
 	return nil
 }
+
 func (self *flagDummy) Int(name string, value int, usage string) *int {
 	flag := flag{name, fmt.Sprintf("%+v", value), usage}
 	*self.list = append(*self.list, flag)
 	return nil
 }
+
 func (self *flagDummy) Var(value goflag.Value, name string, usage string) {
 	flag := flag{name, value.String(), usage}
 	*self.list = append(*self.list, flag)

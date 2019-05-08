@@ -72,6 +72,7 @@ func sendBlock(dn *DataNodeState, blockID BlockID, peers []string) {
 }
 
 func RunRPC(c net.Conn, dn *DataNodeState) {
+
 	server := NewRPCServer(c)
 	defer c.Close()
 
@@ -150,6 +151,24 @@ func RunRPC(c net.Conn, dn *DataNodeState) {
 		if len(forwardTo) > 0 {
 			dn.forwardingBlocks <- ForwardBlock{blockID, forwardTo, -1}
 		}
+
+		method, err = server.ReadHeader()
+		if err != nil{
+			dn.Manager.AbortReceive(blockID)
+			dn.Store.DeleteBlock(blockID)
+			return
+		}
+		//if method == "addData"{
+		//	var w io.Reader
+		//	if err := server.ReadBody(&w); err != nil {
+		//		dn.Manager.AbortReceive(blockID)
+		//		dn.Store.DeleteBlock(blockID)
+		//		return
+		//	}
+		//	dn.Store.WriteBlock(blockID, , w)
+		//}
+
+
 
 	case "Get":
 		var blockID BlockID
