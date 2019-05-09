@@ -65,6 +65,7 @@ func (self *BlockStore) WriteBlock(block common.BlockID, size int64, r io.Reader
 	_, err = r.Read(b)
 	file.Write(b)
 
+
 	f2, err := os.Open(file.Name())
 	hash := crc32.NewIEEE()
 	_, err = io.CopyN(file, io.TeeReader(f2, hash), size)
