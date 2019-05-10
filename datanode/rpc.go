@@ -7,7 +7,7 @@ import (
 	"net/rpc/jsonrpc"
 	"strings"
 
-	. "golang-distributed-filesystem/common"
+	. "T-DFS/common"
 )
 
 func sendBlock(dn *DataNodeState, blockID BlockID, peers []string) {

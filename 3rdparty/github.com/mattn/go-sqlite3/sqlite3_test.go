@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"golang-distributed-filesystem/3rdparty/github.com/mattn/go-sqlite3/sqlite3_test"
+	"T-DFS/3rdparty/github.com/mattn/go-sqlite3/sqlite3_test"
 )
 
 func TempFilename() string {

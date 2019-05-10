@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"golang-distributed-filesystem/3rdparty/github.com/dotcloud/docker/pkg/namesgenerator"
-	"golang-distributed-filesystem/3rdparty/github.com/nu7hatch/gouuid"
+	"T-DFS/3rdparty/github.com/dotcloud/docker/pkg/namesgenerator"
+	"T-DFS/3rdparty/github.com/nu7hatch/gouuid"
 
-	. "golang-distributed-filesystem/common"
+	. "T-DFS/common"
 )
 
 type MetaDataNodeState struct {
@@ -78,7 +78,7 @@ func (self *MetaDataNodeState) GenerateBlock(blob string) ForwardBlock {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	block := BlockID(blob + ":" + u4.String())
+	block := BlockID(blob + "-" + u4.String())
 
 	nodes := self.LeastUsedNodes()
 	var forwardTo []NodeID

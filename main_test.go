@@ -15,10 +15,10 @@ import (
 	"testing"
 	"time"
 
-	. "golang-distributed-filesystem/common"
-	"golang-distributed-filesystem/datanode"
-	"golang-distributed-filesystem/metadatanode"
-	"golang-distributed-filesystem/upload"
+	. "T-DFS/common"
+	"T-DFS/datanode"
+	"T-DFS/metadatanode"
+	"T-DFS/upload"
 )
 
 type ByRandom []string

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	. "golang-distributed-filesystem/common"
+	. "T-DFS/common"
 )
 
 var (

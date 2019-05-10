@@ -1,4 +1,4 @@
-[![GoDoc](https://godoc.org/github.com/michaelmaltese/golang-distributed-filesystem?status.png)](https://godoc.org/github.com/michaelmaltese/golang-distributed-filesystem) [![Build Status](https://travis-ci.org/michaelmaltese/golang-distributed-filesystem.svg?branch=master)](https://travis-ci.org/michaelmaltese/golang-distributed-filesystem)
+[![GoDoc](https://godoc.org/github.com/michaelmaltese/T-DFS?status.png)](https://godoc.org/github.com/michaelmaltese/T-DFS) [![Build Status](https://travis-ci.org/michaelmaltese/T-DFS.svg?branch=master)](https://travis-ci.org/michaelmaltese/T-DFS)
 
 Writing a HDFS clone in [Go](http://golang.org) to learn more about Go and the nitty-gritty of distributed systems. 
 

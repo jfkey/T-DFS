@@ -1,9 +1,9 @@
 package main
 
 import (
-	"golang-distributed-filesystem/datanode"
-	"golang-distributed-filesystem/metadatanode"
-	"golang-distributed-filesystem/upload"
+	"T-DFS/datanode"
+	"T-DFS/metadatanode"
+	"T-DFS/upload"
 	"log"
 	"math/rand"
 	"net"
@@ -91,7 +91,8 @@ func main() {
 	//
 	//
 	leaderAddress2 :=  "127.0.0.1:5050"
-	filename := "D:/res/add.csv"
+	// filename := "D:/res/add.csv"
+	filename := "D:/cookies/windbg/1.zip"
 
 	upload.Upload(getFile(filename), debug, leaderAddress2)
 

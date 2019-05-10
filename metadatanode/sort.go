@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"sort"
 
-	. "golang-distributed-filesystem/common"
+	. "T-DFS/common"
 )
 
 type ByRandom []NodeID

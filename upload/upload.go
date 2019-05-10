@@ -13,7 +13,7 @@ import (
 	"os"
 	"strings"
 
-	. "golang-distributed-filesystem/common"
+	. "T-DFS/common"
 )
 
 func Upload(file *os.File, debug bool, leaderAddress string) string {
